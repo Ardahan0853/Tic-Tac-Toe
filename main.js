@@ -1,17 +1,17 @@
-const item = document.querySelector('.item')
+const items = document.querySelectorAll('.item')
 
 
 const GameBoard = (function() {
      var Gameboard = {
         Columns:{
-            col1:false,
-            col2:false,
-            col3:false
+            col0:false,
+            col1: false,
+            col2 : false
         },
         Rows:{
+            row0:false,
             row1:false,
-            row2:false,
-            row3:false
+            row2:false
         }
      }
      var Players = []
@@ -42,24 +42,39 @@ const GameBoard = (function() {
      }
      init()
      function calculateGame(){
-        Players.forEach(player => {
-            const keys = Object.keys(player.playerColumns)
-            keys.forEach((key,index) => {
-                return(key, Players[key])
-            })
-        })
+       
      }
      calculateGame()
      function consoleLog(){
         console.log(Players)
      } 
      function init(){
-        addPlayer("Arda", 1)
-        addPlayer("Arda2", 2)
+        addPlayer("Arda", 0)
+        addPlayer("Arda2", 1)
+     }
+     function addEvent(e){
+    
+        items.forEach((box, index) => {
+            box.addEventListener('click',(e) => {
+                togglePlayerBoolean(0, index)
+                e.isTrue = true
+                console.log(e)
+                console.log(index)
+            })
+        })    
+     }
+     function togglePlayerBoolean(playerNumber, index){
+        for(let i =0 ; i < index; i++){
+            Players[playerNumber].playerColumns[index] = !Players[playerNumber].playerColumns[index]
+        }
+        console.log(Players[playerNumber])
+        
      }
      return {
         addPlayer: addPlayer,
         consoleLog: consoleLog,
+        addEvent:addEvent
     }
     
 })()
+GameBoard.addEvent()
