@@ -1,3 +1,6 @@
+const item = document.querySelector('.item')
+
+
 const GameBoard = (function() {
      var Gameboard = {
         Columns:{
@@ -13,19 +16,20 @@ const GameBoard = (function() {
      }
      var Players = []
 
-     var Player = function(player){
-        this.player = player
+     var Player = function(name, number, playerColumns, playerRows){
+        this.name = name,
+        this.number = number,
+        this.playerColumns = playerColumns,
+        this.playerRows = playerRows;
      }
-     
-
      function addPlayer(Name, number){
-        let player = new Player({
-            name:Name,
-            number:number,
-            playerColumns:Gameboard.Columns,
-            playerRows:Gameboard.Rows,
+        let player = new Player(
+            Name,
+            number,
+            Gameboard.Columns,
+            Gameboard.Rows,
 
-        })
+        )
         // var player = {
         //     name: Name,
         //     playerNumber: number,
@@ -35,14 +39,27 @@ const GameBoard = (function() {
         if(Players.length < 2){
             Players.push(player)
         }
-        
-        console.log(Players)
-        
      }
+     init()
      function calculateGame(){
-
+        Players.forEach(player => {
+            const keys = Object.keys(player.playerColumns)
+            keys.forEach((key,index) => {
+                return(key, Players[key])
+            })
+        })
+     }
+     calculateGame()
+     function consoleLog(){
+        console.log(Players)
+     } 
+     function init(){
+        addPlayer("Arda", 1)
+        addPlayer("Arda2", 2)
      }
      return {
-        addPlayer: addPlayer
+        addPlayer: addPlayer,
+        consoleLog: consoleLog,
     }
+    
 })()
