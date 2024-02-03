@@ -2,32 +2,25 @@ const items = document.querySelectorAll('.item')
 
 
 const GameBoard = (function() {
-     var Gameboard = {
-        Columns:{
-            col0:false,
-            col1: false,
-            col2 : false
-        },
-        Rows:{
-            row0:false,
-            row1:false,
-            row2:false
-        }
+    let Gameboard = []
+     for(let i = 0; i < 9; i++){
+        Gameboard.push('')
      }
+     isTurn = false
+
      var Players = []
 
-     var Player = function(name, number, playerColumns, playerRows){
+     var Player = function(name, number, isTurn){
         this.name = name,
         this.number = number,
-        this.playerColumns = playerColumns,
-        this.playerRows = playerRows;
+        this.isTurn = isTurn
      }
-     function addPlayer(Name, number){
+     function addPlayer(Name, number, isTurn){
         let player = new Player(
             Name,
             number,
-            Gameboard.Columns,
-            Gameboard.Rows,
+            isTurn
+            
 
         )
         // var player = {
@@ -49,27 +42,48 @@ const GameBoard = (function() {
         console.log(Players)
      } 
      function init(){
-        addPlayer("Arda", 0)
-        addPlayer("Arda2", 1)
+        addPlayer("Player1", 0, false)
+        addPlayer("Player2", 1, false)
      }
      function addEvent(e){
     
         items.forEach((box, index) => {
             box.addEventListener('click',(e) => {
-                togglePlayerBoolean(0, index)
+                
+                let currentPlayer
+                if(!isTurn){
+                    currentPlayer = Players[0]
+                    isTurn = true
+                }else{
+                    currentPlayer = Players[1]
+                    isTurn = false
+                }
+
+                togglePlayerBoolean(currentPlayer , index)
+                currentPlayer.isTurn = false
                 e.isTrue = true
                 console.log(e)
                 console.log(index)
+                renderDOM(index)
             })
         })    
      }
-     function togglePlayerBoolean(playerNumber, index){
-        for(let i =0 ; i < index; i++){
-            Players[playerNumber].playerColumns[index] = !Players[playerNumber].playerColumns[index]
+     function togglePlayerBoolean(currentPlayer, index){
+        if(currentPlayer.number === 0){
+            
         }
-        console.log(Players[playerNumber])
+        currentPlayer.isTurn = true
+        console.log(currentPlayer)
         
      }
+     function renderDOM(number){
+        items.forEach((item, index) => {
+            if(number === index){
+                console.log(item)
+            }
+        })        
+     }
+
      return {
         addPlayer: addPlayer,
         consoleLog: consoleLog,
