@@ -6,7 +6,7 @@ const GameBoard = (function() {
      for(let i = 0; i < 9; i++){
         Gameboard.push('')
      }
-     isTurn = false
+     let isTurn = false
 
      var Players = []
 
@@ -42,7 +42,7 @@ const GameBoard = (function() {
         console.log(Players)
      } 
      function init(){
-        addPlayer("Player1", 0, false)
+        addPlayer("Player1", 0, true)
         addPlayer("Player2", 1, false)
      }
      function addEvent(e){
@@ -50,36 +50,42 @@ const GameBoard = (function() {
         items.forEach((box, index) => {
             box.addEventListener('click',(e) => {
                 
-                let currentPlayer
-                if(!isTurn){
-                    currentPlayer = Players[0]
-                    isTurn = true
-                }else{
-                    currentPlayer = Players[1]
-                    isTurn = false
-                }
+                let currentPlayer = Players.filter(player => {
+                    return player.isTurn
+                })
+                Players[0].isTurn = !Players[0].isTurn
+                Players[1].isTurn = !Players[1].isTurn
+                
 
-                togglePlayerBoolean(currentPlayer , index)
-                currentPlayer.isTurn = false
+                currentPlayers(currentPlayer[0])
+                
                 e.isTrue = true
-                console.log(e)
+                console.log(e.target.value)
                 console.log(index)
-                renderDOM(index)
+                renderDOM(index , currentPlayer[0])
             })
         })    
      }
-     function togglePlayerBoolean(currentPlayer, index){
-        if(currentPlayer.number === 0){
-            
-        }
-        currentPlayer.isTurn = true
+     function currentPlayers(currentPlayer){
         console.log(currentPlayer)
+        return currentPlayer.number
         
      }
-     function renderDOM(number){
+     
+    //  function pushingArray(index, playerSelection){
+    //     Gameboard.splice(index, 1, playerSelection)
+    //  }
+
+     
+
+     function renderDOM(number, currentPlayer){
         items.forEach((item, index) => {
+            
+            
             if(number === index){
-                console.log(item)
+                Gameboard.splice(number, 1, currentPlayers(currentPlayer) == 0 ? 'x' : 'o')
+                console.log(Gameboard)
+                item.innerHTML = `${Gameboard[index]}`
             }
         })        
      }
